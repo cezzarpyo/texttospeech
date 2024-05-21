@@ -1,11 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text To Speech</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .input-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .input {
+        width: 350px;
+        height: 40px; 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+        font-weight: 500;
+        font-size: 1rem;
+        color: #fff;
+        background-color: rgb(28, 28, 30);
+        box-shadow: 0 0 .4vw rgba(0, 0, 0, 0.5), 0 0 0 .15vw transparent;
+        border-radius: 0.4vw;
+        border: none;
+        outline: none;
+        padding: 10px; 
+        max-width: 190px;
+        transition: .4s;
+    }
+
+    .input:hover {
+        box-shadow: 0 0 0 .15vw rgba(135, 207, 235, 0.186);
+    }
+
+    .input:focus {
+        box-shadow: 0 0 0 .15vw skyblue;
+    }
+</style>
 </head>
 <body>
-  
+
+<div class="input-container">
+    <input type="text" name="text" class="input" placeholder="Text To Speech 🗣️" id="textInput">
+</div>
+
+<script>
+    const input = document.getElementById('textInput');
+
+    input.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const text = input.value.trim();
+            if (text !== '') {
+                speak(text);
+                input.value = ''; // Limpa o input
+            }
+        }
+    });
+
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            // Define a voz desejada (exemplo: voz em português brasileiro)
+            utterance.voice = speechSynthesis.getVoices().find(voice => voice.lang === 'pt-BR');
+            window.speechSynthesis.speak(utterance);
+        } else {
+            console.log('A API de fala não é suportada neste navegador.');
+        }
+    }
+</script>
+
 </body>
 </html>
